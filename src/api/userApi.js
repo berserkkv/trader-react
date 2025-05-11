@@ -1,7 +1,8 @@
 import axios from "axios";
+import.meta.env.VITE_API_BASE_URL
 
-//const API = "http://193.180.208.245:8080/api/users";
-const API = "http://localhost:8080/api/users";
+const API = "http://" +  import.meta.env.VITE_API_URL  + ":8080/api/users";
+//const API = "http://localhost:8080/api/users";
 
 export const getUsers = () => axios.get(API);
 export const getUser = (id) => axios.get(`${API}/${id}`);
