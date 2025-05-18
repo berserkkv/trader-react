@@ -1,39 +1,36 @@
 import { useEffect, useState } from "react";
-import { getUsers, createUser, updateUser, deleteUser } from "./api/userApi";
-import UserForm from "./components/UserForm";
-import UserList from "./components/UserList";
+import { getOrders, getBots} from "./api/Api";
+import OrderList from "./components/OrderList";
+import BotList from "./components/BotList";
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const [editingUser, setEditingUser] = useState(null);
+  const [orders, setOrders] = useState([]);
+  const [bots, setBots] = useState([]);
 
-  const fetchUsers = async () => {
-    const res = await getUsers();
-    setUsers(res.data);
+  const fetchOrders = async () => {
+    const res = await getOrders();
+    setOrders(res.data);
   };
+  const fetchBots = async () => {
+    const res = await getBots();
+    setBots(res.data);
+  };
+
 
   useEffect(() => {
-    fetchUsers();
+    fetchOrders();
+    fetchBots();
   }, []);
-
-  const handleSave = async (user) => {
-    if (user.id) await updateUser(user);
-    else await createUser(user);
-    setEditingUser(null);
-    fetchUsers();
-  };
-
-  const handleDelete = async (id) => {
-    await deleteUser(id);
-    fetchUsers();
-  };
+ 
 
   return (
     <div>
-      <h1>User Manager</h1>
-      <UserForm onSave={handleSave} editUser={editingUser} />
-      <UserList users={users} onEdit={setEditingUser} onDelete={handleDelete} />
+      <BotList bots={bots}/>
+      <OrderList orders={orders}/>
+
     </div>
+
+    
   );
 }
 
