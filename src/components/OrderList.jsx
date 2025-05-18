@@ -1,9 +1,9 @@
 export default function OrderList({ orders }) {
   return (
     <div className="overflow-x-auto bg-gray-900 p-4 rounded-xl shadow-lg">
-      <table className="min-w-full table-auto border border-gray-700 text-gray-200">
+      <table className="min-w-full table-auto border text-sm text-gray-200">
         <thead>
-          <tr className="bg-gray-800 text-sm uppercase tracking-wider text-gray-300">
+          <tr className="bg-gray-800 text-xs tracking-wider text-gray-400">
             <th className="px-4 py-3 border border-gray-700">ID</th>
             <th className="px-4 py-3 border border-gray-700">Symbol</th>
             <th className="px-4 py-3 border border-gray-700">Type</th>
@@ -27,16 +27,16 @@ export default function OrderList({ orders }) {
               <td className="px-4 py-2 border border-gray-700">{order.symbol.name || order.symbol}</td>
               <td className="px-4 py-2 border border-gray-700">{order.type}</td>
               <td className="px-4 py-2 border border-gray-700">{order.botId}</td>
-              <td className="px-4 py-2 border border-gray-700">{order.entryPrice}</td>
-              <td className="px-4 py-2 border border-gray-700">{order.exitPrice}</td>
-              <td className="px-4 py-2 border border-gray-700">{order.quantity}</td>
-              <td className="px-4 py-2 border border-gray-700">{order.profitLoss}</td>
+              <td className="px-4 py-2 border border-gray-700">{Number(order.entryPrice).toFixed(2)}</td>
+              <td className="px-4 py-2 border border-gray-700">{Number(order.exitPrice).toFixed(2)}</td>
+              <td className="px-4 py-2 border border-gray-700">{Number(order.quantity).toFixed(2)}</td>
+              <td className="px-4 py-2 border border-gray-700">{Number(order.profitLoss).toFixed(2)}</td>
               <td
                 className={`px-4 py-2 border border-gray-700 ${
                   order.profitLossPercent >= 0 ? "text-green-400" : "text-red-400"
                 }`}
               >
-                {order.profitLossPercent}%
+                {Number(order.profitLossPercent).toFixed(2)}
               </td>
               <td className="px-4 py-2 border border-gray-700">
                 {new Date(order.createdTime).toLocaleString()}
