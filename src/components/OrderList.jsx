@@ -1,3 +1,6 @@
+import { formatDateTime } from "../tools/Tool";
+
+
 export default function OrderList({ orders }) {
   return (
     <div className="overflow-x-auto bg-gray-900 p-4 rounded-xl shadow-lg">
@@ -38,11 +41,11 @@ export default function OrderList({ orders }) {
               >
                 {Number(order.profitLossPercent).toFixed(2)}
               </td>
-              <td className="px-4 py-2 border border-gray-700">
-                {new Date(order.createdTime).toLocaleString()}
+              <td className="px-4 text-xs py-2 border border-gray-700">
+                {formatDateTime(order.createdTime)}
               </td>
-              <td className="px-4 py-2 border border-gray-700">
-                {new Date(order.closedTime).toLocaleString()}
+              <td className="px-4 text-xs not-[]:py-2 border border-gray-700">
+                {formatDateTime(order.closedTime)}
               </td>
             </tr>
           ))}
