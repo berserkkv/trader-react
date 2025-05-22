@@ -17,7 +17,7 @@ export default function BotList({ bots }) {
         <thead>
           <tr className="bg-gray-800 text-gray-400">
             {[
-              "ID", "Name", "Current", "Trades", "Order Type", "Order Time",
+              "ID", "Name", "Current", "Trades", "Last Scanned", "Order Type", "Order Time",
               "Entry Price", "Stop Loss", "Take Profit"
             ].map((title) => (
               <th key={title} className="px-3 py-2 border-b border-gray-700 text-xs font-semibold text-left">
@@ -41,6 +41,7 @@ export default function BotList({ bots }) {
                 /
                 <span className="text-red-700">{bot.totalLosses}</span>
               </td>
+              <td className="px-3 py-2">{formatDateTime(bot.lastScanned)}</td>
               <td className="px-3 py-2">{formatEmptyField(bot.orderType)}</td>
               <td className="px-3 py-2">{formatDateTime(bot.orderCreatedTime)}</td>
               <td className="px-3 py-2">{bot.orderEntryPrice}</td>
