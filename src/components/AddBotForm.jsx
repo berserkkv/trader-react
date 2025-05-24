@@ -3,10 +3,13 @@ import { createBot } from "../api/Api";
 
 export default function AddBotForm() {
   const [form, setForm] = useState({
-    symbol: "",
-    timeframe: "",
-    strategy: "",
-    capital: ""
+    symbol: "SOLUSDT",
+    timeframe: "15m",
+    strategy: "HA",
+    capital: "100",
+    leverage: "10",
+    takeProfit: "3",
+    stopLoss: "1"
   });
 
   const [success, setSuccess] = useState(false);
@@ -26,12 +29,23 @@ export default function AddBotForm() {
         symbol: form.symbol,
         timeframe: form.timeframe,
         strategy: form.strategy,
-        capital: parseInt(form.capital, 10)
+        capital: parseFloat(form.capital),
+        leverage: parseFloat(form.leverage),
+        takeProfit: parseFloat(form.takeProfit),
+        stopLoss: parseFloat(form.stopLoss),
       };
 
       await createBot(payload);
       setSuccess(true);
-      setForm({ symbol: "", timeframe: "", strategy: "", capital: "" });
+      setForm({
+        symbol: "",
+        timeframe: "",
+        strategy: "",
+        capital: "",
+        leverage: "",
+        takeProfit: "",
+        stopLoss: ""
+      });
     } catch (err) {
       console.error(err);
       setError("Failed to create bot.");
@@ -46,6 +60,9 @@ export default function AddBotForm() {
         <Input name="timeframe" label="Time Frame" value={form.timeframe} onChange={handleChange} />
         <Input name="strategy" label="Strategy Name" value={form.strategy} onChange={handleChange} />
         <Input name="capital" label="Initial Capital" type="number" value={form.capital} onChange={handleChange} />
+        <Input name="leverage" label="Leverage" type="number" value={form.leverage} onChange={handleChange} />
+        <Input name="takeProfit" label="Take Profit" type="number" value={form.takeProfit} onChange={handleChange} />
+        <Input name="stopLoss" label="Stop Loss" type="number" value={form.stopLoss} onChange={handleChange} />
 
         <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg">
           Create Bot
@@ -70,6 +87,7 @@ function Input({ name, label, type = "text", value, onChange }) {
         value={value}
         onChange={onChange}
         required
+        step="any"  // important for float numbers
       />
     </div>
   );

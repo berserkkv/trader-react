@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getBotById, getOrders, getOrdersByBotId, startBot, stopBot } from "../api/Api";
 import OrderList from "./OrderList";
+import { formatDateTime } from "../tools/Tool";
 
 export default function BotInfo() {
   const { id } = useParams();
@@ -85,26 +86,48 @@ export default function BotInfo() {
 
 
 
-        <div className="space-y-2">
+        <div className="grid grid-cols-2 sm:grid-cols-2 gap-x-6 gap-y-2">
+          <InfoRow label="ID" value={bot.id} />
+          <InfoRow label="Name" value={bot.name} />
           <InfoRow label="Symbol" value={bot.symbol} />
           <InfoRow label="Time Frame" value={bot.timeFrame} />
-          <InfoRow label="Strategy" value={bot.strategyName} />
-          <InfoRow label="Initial Capital" value={`${Number(bot.initialCapital).toFixed(2)
-            }`} />
-          <InfoRow label="Current Capital" value={`${Number(bot.currentCapital).toFixed(2)}`} />
-          <InfoRow label="Wins / Losses / Trades" value={`${bot.totalWins} / ${bot.totalLosses} / ${bot.totalTrades}`} />
+          <InfoRow label="Strategy Name" value={bot.strategyName} />
+          <InfoRow label="Current Capital" value={Number(bot.currentCapital).toFixed(2)} />
+          <InfoRow label="Last Scanned" value={formatDateTime(bot.lastScanned).toLocaleString()} />
+          <InfoRow label="Wins / Losses" value={`${bot.totalWins} / ${bot.totalLosses}`} />
           <InfoRow label="Streaks" value={`W: ${bot.currentWinsStreak} (Max: ${bot.maxWinsStreak}), L: ${bot.currentLossStreak} (Max: ${bot.maxLossStreak})`} />
+          <InfoRow label="Leverage" value={bot.leverage} />
+
         </div>
         {bot.inPos && (
-          <div className="space-y-2 border-2 border-gray-800 p-4 rounded-lg">
-            <InfoRow label="Order Type" value={bot.orderType} />
-            <InfoRow label="Order Entry Price" value={`$${bot.orderEntryPrice}`} />
-            <InfoRow label="Stop Loss / Take Profit" value={`SL: ${Number(bot.orderStopLoss).toFixed(2)}, TP: ${Number(bot.orderTakeProfit).toFixed(2)}`} />
-            <InfoRow label="Quantity" value={`${Number(bot.orderQuantity).toFixed(2)}`} />
-            <InfoRow label="Capital" value={`${Number(bot.orderCapital).toFixed(2)}`} />
-            <InfoRow label="Fee" value={`${Number(bot.orderFee).toFixed(2)}`} />
+          <div className="grid grid-cols-2 sm:grid-cols-2 gap-x-6 gap-y-2 border-t pt-3 border-gray-700" >
+            <InfoRow
+              label="Order Type"
+              value={bot.orderType}
+              color={bot.orderType === "LONG" ? "text-green-400" : bot.orderType === "SHORT" ? "text-red-400" : "text-gray-300"}
+            />
+            <InfoRow label="Scanned" value={formatDateTime(bot.orderScannedTime).toLocaleString()} />
+            <InfoRow label="Quantity" value={Number(bot.orderQuantity).toFixed(2)} />
+            <InfoRow label="Capital" value={Number(bot.orderCapital).toFixed(2)} />
+            <InfoRow label="Capital With Leverage" value={Number(bot.orderCapitalWithLeverage).toFixed(2)} />
+            <InfoRow label="Entry Price" value={Number(bot.orderEntryPrice).toFixed(2)} />
+            <InfoRow label="Stop Loss" value={Number(bot.orderStopLoss).toFixed(2)} />
+            <InfoRow label="Take Profit" value={Number(bot.orderTakeProfit).toFixed(2)} />
+            <InfoRow label="Fee" value={Number(bot.orderFee).toFixed(2)} />
+            <InfoRow
+              label="PnL"
+              value={Number(bot.pnl).toFixed(2)}
+              color={bot.pnl > 0 ? "text-green-400" : bot.pnl < 0 ? "text-red-400" : "text-gray-300"}
+            />
+            <InfoRow
+              label="ROE"
+              value={Number(bot.roe).toFixed(2)}
+              color={bot.roe > 0 ? "text-green-400" : bot.roe < 0 ? "text-red-400" : "text-gray-300"}
+            />
+            <InfoRow label="Created At" value={formatDateTime(bot.orderCreatedTime).toLocaleString()} />
+            <InfoRow label="Stop Loss" value={`${bot.takeProfit}%`} />
+            <InfoRow label="Stop Loss" value={`${bot.stopLoss}%`} />
 
-            <InfoRow label="Created At" value={new Date(bot.orderCreatedTime).toLocaleString()} />
           </div>
         )}
 
@@ -119,9 +142,10 @@ export default function BotInfo() {
 
 function InfoRow({ label, value, color = "text-gray-300" }) {
   return (
-    <div className="flex justify-between border-b border-gray-800 py-1">
-      <span className="text-sm text-gray-400">{label}</span>
+    <div className="flex flex-col border-gray-800 py-1">
+      <span className="text-xs text-gray-400">{label}</span>
       <span className={`text-sm font-medium ${color}`}>{value}</span>
     </div>
+
   );
 }

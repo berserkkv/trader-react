@@ -2,8 +2,6 @@ import { formatDateTime } from "../tools/Tool";
 
 export default function BotList({ bots }) {
 
-
-
   function formatEmptyField(data) {
     if (data === "" || data === null) {
       return "---";
@@ -12,45 +10,103 @@ export default function BotList({ bots }) {
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg shadow-md bg-gray-950 p-4">
-      <table className="min-w-full table-auto border-collapse text-sm text-gray-200">
-        <thead>
-          <tr className="bg-gray-800 text-gray-400">
-            {[
-              "ID", "Name", "Current", "Trades", "Last Scanned", "Order Type", "Order Time",
-              "Entry Price", "Stop Loss", "Take Profit"
-            ].map((title) => (
-              <th key={title} className="px-3 py-2 border-b border-gray-700 text-xs font-semibold text-left">
-                {title}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {bots.map((bot, index) => (
-            <tr
+    <div className="p-0 grid gap-3 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 max-w-2xl m-auto">
+      {bots.map((bot) => (
+        <div
+          key={bot.id}
+          className={`bg-gray-900 rounded-lg shadow-md p-4 flex flex-col justify-between
+            ${bot.isNotActive ? 'text-gray-500' : 'text-gray-200'}`}
+        >
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <a href={`/bots/${bot.id}`} className="text-sm hover:underline">
+                {bot.name}
+              </a>
+              <div className="text-sm">
+                <span className="text-xs text-gray-400">{bot.leverage}x </span>
+                <span className="text-green-500 font-semibold">{bot.totalWins}</span>/
+                <span className="text-red-500 font-semibold">{bot.totalLosses}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-sm">
+                {/* additional stats here if needed */}
+              </div>
+            </div>
 
-              key={bot.id}
-              className={`border-b border-gray-800 hover:bg-gray-800 ${index % 2 === 0 ? 'bg-gray-900' : 'bg-gray-950'} ${bot.isNotActive ? 'text-gray-500' : 'text-gray-50'}`}
-            >
-              <td className="px-3 py-2">{bot.id}</td>
-              <td className="px-3 py-2"><a href={`/bots/${bot.id}`}>{bot.name}</a></td>
-              <td className="px-3 py-2">{Number(bot.currentCapital).toFixed(2)}</td>
-              <td className="px-3 py-2">
-                <span className="text-green-600">{bot.totalWins}</span>
-                /
-                <span className="text-red-700">{bot.totalLosses}</span>
-              </td>
-              <td className="px-3 py-2">{formatDateTime(bot.lastScanned)}</td>
-              <td className="px-3 py-2">{formatEmptyField(bot.orderType)}</td>
-              <td className="px-3 py-2">{formatDateTime(bot.orderCreatedTime)}</td>
-              <td className="px-3 py-2">{bot.orderEntryPrice}</td>
-              <td className="px-3 py-2">{Number(bot.orderStopLoss).toFixed(2)}</td>
-              <td className="px-3 py-2">{Number(bot.orderTakeProfit).toFixed(2)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+            <div className="ml-auto text-right">
+              <div className="text-sm font-semibold">
+                {Number(bot.currentCapital).toFixed(2)}
+              </div>
+              <p className="text-xs text-gray-400">{formatDateTime(bot.lastScanned)}</p>
+            </div>
+          </div>
+
+
+
+
+
+
+
+          {bot.inPos && (
+            <div className={`mt-2 pt-2 border-t text-gray-100 ${bot.orderType === "LONG" ? "border-green-500" :
+              bot.orderType === "SHORT" ? "border-red-500" : "border-gray-700"
+              }`}>
+              <div className="grid grid-cols-3 gap-x-6 gap-y-2 text-sm">
+
+                <div className="flex flex-col">
+                  <span className="text-xs label">PNL:</span>
+                  <span className={
+                    bot.pnl > 0 ? "text-green-500" :
+                      bot.pnl < 0 ? "text-red-500" :
+                        ""
+                  }>
+                    {Number(bot.pnl).toFixed(2)}
+                  </span>
+                </div>
+
+                <div className="flex flex-col">
+                  <span className="text-xs label">Created Time:</span>
+                  <span>{formatDateTime(bot.orderCreatedTime)}</span>
+                </div>
+
+                {/* Column 3 - right aligned */}
+                <div className="flex flex-col items-end text-right">
+                  <span className="text-xs label">ROE:</span>
+                  <span className={
+                    bot.roe > 0 ? "text-green-500" :
+                      bot.roe < 0 ? "text-red-500" :
+                        ""
+                  }>
+                    %{Number(bot.roe).toFixed(2)}
+                  </span>
+                </div>
+
+
+                <div className="flex flex-col">
+                  <span className="text-xs label">Entry Price:</span>
+                  <span>{bot.orderEntryPrice}</span>
+                </div>
+
+
+                <div className="flex flex-col">
+                  <span className="text-xs label">Stop Loss:</span>
+                  <span>{Number(bot.orderStopLoss).toFixed(2)}</span>
+                </div>
+
+
+                <div className="flex flex-col items-end text-right">
+                  <span className="text-xs label">Take Profit:</span>
+                  <span>{Number(bot.orderTakeProfit).toFixed(2)}</span>
+                </div>
+
+              </div>
+            </div>
+
+          )}
+
+
+        </div>
+      ))
+      }
+    </div >
   );
 }

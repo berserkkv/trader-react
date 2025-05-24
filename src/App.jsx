@@ -7,13 +7,8 @@ import BotInfo from "./components/BotInfo";
 import AddBotForm from "./components/AddBotForm";
 
 function App() {
-  const [orders, setOrders] = useState([]);
   const [bots, setBots] = useState([]);
 
-  const fetchOrders = async () => {
-    const res = await getOrders();
-    setOrders(res.data);
-  };
 
   const fetchBots = async () => {
     const res = await getBots();
@@ -21,7 +16,6 @@ function App() {
   };
 
   useEffect(() => {
-    fetchOrders();
     fetchBots();
   }, []);
 
@@ -34,9 +28,8 @@ function App() {
             element={
               <>
                 <a href="/bots/create" className="text-blue-500 hover:underline">Create new bot</a>
-               
+
                 <BotList bots={bots} />
-                <OrderList orders={orders} />
               </>
             }
           />
