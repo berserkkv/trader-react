@@ -23,9 +23,9 @@ export default function BotList({ bots }) {
                 {bot.name}
               </a>
               <div className="text-sm">
-                <span className="text-xs text-gray-400">{bot.leverage}x </span>
-                <span className="text-green-500 font-semibold">{bot.totalWins}</span>/
-                <span className="text-red-500 font-semibold">{bot.totalLosses}</span>
+                <span className="text- text-gray-400">{bot.leverage}x </span>
+                <span className="text-up font-semibold">{bot.totalWins}</span>/
+                <span className="text-down font-semibold">{bot.totalLosses}</span>
               </div>
               <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-sm">
                 {/* additional stats here if needed */}
@@ -47,16 +47,16 @@ export default function BotList({ bots }) {
 
 
           {bot.inPos && (
-            <div className={`mt-2 pt-2 border-t text-gray-100 ${bot.orderType === "LONG" ? "border-green-500" :
-              bot.orderType === "SHORT" ? "border-red-500" : "border-gray-700"
+            <div className={`mt-2 pt-2 border-t text-gray-100 ${bot.orderType === "LONG" ? "border-up" :
+              bot.orderType === "SHORT" ? "border-up" : "border-gray-700"
               }`}>
               <div className="grid grid-cols-3 gap-x-6 gap-y-2 text-sm">
 
                 <div className="flex flex-col">
                   <span className="text-xs label">PNL:</span>
                   <span className={
-                    bot.pnl > 0 ? "text-green-500" :
-                      bot.pnl < 0 ? "text-red-500" :
+                    bot.pnl > 0 ? "text-up" :
+                      bot.pnl < 0 ? "text-down" :
                         ""
                   }>
                     {Number(bot.pnl).toFixed(2)}
@@ -72,8 +72,8 @@ export default function BotList({ bots }) {
                 <div className="flex flex-col items-end text-right">
                   <span className="text-xs label">ROE:</span>
                   <span className={
-                    bot.roe > 0 ? "text-green-500" :
-                      bot.roe < 0 ? "text-red-500" :
+                    bot.roe > 0 ? "text-up" :
+                      bot.roe < 0 ? "text-down" :
                         ""
                   }>
                     %{Number(bot.roe).toFixed(2)}

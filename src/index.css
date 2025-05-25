@@ -2,9 +2,26 @@
 
 
 body {
-  @apply bg-slate-950
+  @apply bg-gray-950
+  /* background-color: rgb(8, 5, 26) */
 }
 
 .label {
   @apply text-slate-400
+}
+
+.text-up {
+  @apply text-blue-500
+}
+
+.text-down {
+  @apply text-yellow-500
+}
+
+.border-up {
+  @apply border-blue-500
+}
+
+.border-down {
+  @apply border-yellow-500
 }

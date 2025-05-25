@@ -97,6 +97,8 @@ export default function BotInfo() {
           <InfoRow label="Wins / Losses" value={`${bot.totalWins} / ${bot.totalLosses}`} />
           <InfoRow label="Streaks" value={`W: ${bot.currentWinsStreak} (Max: ${bot.maxWinsStreak}), L: ${bot.currentLossStreak} (Max: ${bot.maxLossStreak})`} />
           <InfoRow label="Leverage" value={bot.leverage} />
+          <InfoRow label="Take Profit" value={`${bot.takeProfit}%`} />
+          <InfoRow label="Stop Loss" value={`${bot.stopLoss}%`} />
 
         </div>
         {bot.inPos && (
@@ -104,7 +106,7 @@ export default function BotInfo() {
             <InfoRow
               label="Order Type"
               value={bot.orderType}
-              color={bot.orderType === "LONG" ? "text-green-400" : bot.orderType === "SHORT" ? "text-red-400" : "text-gray-300"}
+              color={bot.orderType === "LONG" ? "text-up" : bot.orderType === "SHORT" ? "text-down" : "text-gray-300"}
             />
             <InfoRow label="Scanned" value={formatDateTime(bot.orderScannedTime).toLocaleString()} />
             <InfoRow label="Quantity" value={Number(bot.orderQuantity).toFixed(2)} />
@@ -117,16 +119,14 @@ export default function BotInfo() {
             <InfoRow
               label="PnL"
               value={Number(bot.pnl).toFixed(2)}
-              color={bot.pnl > 0 ? "text-green-400" : bot.pnl < 0 ? "text-red-400" : "text-gray-300"}
+              color={bot.pnl > 0 ? "text-up" : bot.pnl < 0 ? "text-down" : "text-gray-300"}
             />
             <InfoRow
               label="ROE"
               value={Number(bot.roe).toFixed(2)}
-              color={bot.roe > 0 ? "text-green-400" : bot.roe < 0 ? "text-red-400" : "text-gray-300"}
+              color={bot.roe > 0 ? "text-up" : bot.roe < 0 ? "text-down" : "text-gray-300"}
             />
             <InfoRow label="Created At" value={formatDateTime(bot.orderCreatedTime).toLocaleString()} />
-            <InfoRow label="Stop Loss" value={`${bot.takeProfit}%`} />
-            <InfoRow label="Stop Loss" value={`${bot.stopLoss}%`} />
 
           </div>
         )}
