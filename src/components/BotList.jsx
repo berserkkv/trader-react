@@ -1,4 +1,4 @@
-import { formatDateTime } from "../tools/Tool";
+import { formatDateTime, getPercentage } from "../tools/Tool";
 
 export default function BotList({ bots }) {
 
@@ -86,16 +86,23 @@ export default function BotList({ bots }) {
                   <span>{bot.orderEntryPrice}</span>
                 </div>
 
-
                 <div className="flex flex-col">
                   <span className="text-xs label">Stop Loss:</span>
-                  <span>{Number(bot.orderStopLoss).toFixed(2)}</span>
+                  <span>{Number(bot.orderStopLoss).toFixed(2)}
+                    <span className="text-xs pl-1">
+                      ({getPercentage(bot.orderEntryPrice, bot.orderStopLoss, bot.leverage)}%)
+                    </span>
+                  </span>
                 </div>
 
 
                 <div className="flex flex-col items-end text-right">
                   <span className="text-xs label">Take Profit:</span>
-                  <span>{Number(bot.orderTakeProfit).toFixed(2)}</span>
+                  <span>{Number(bot.orderTakeProfit).toFixed(2)}
+                    <span className="text-xs pl-1">
+                      ({getPercentage(bot.orderEntryPrice, bot.orderTakeProfit, bot.leverage)}%)
+                    </span>
+                  </span>
                 </div>
 
               </div>

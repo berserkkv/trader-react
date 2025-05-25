@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getBotById, getOrders, getOrdersByBotId, startBot, stopBot } from "../api/Api";
 import OrderList from "./OrderList";
-import { formatDateTime } from "../tools/Tool";
+import { formatDateTime, getPercentage } from "../tools/Tool";
 
 export default function BotInfo() {
   const { id } = useParams();
@@ -59,15 +59,9 @@ export default function BotInfo() {
 
   return (
     <div>
-      <div className="p-6 max-w-2xl mx-auto bg-gray-900 text-gray-300 rounded-xl shadow-lg mt-6 space-y-4">
-        <a className="underline" href="/" >back</a>
-        <h2 className="text-2xl font-bold text-white border-b border-gray-700 pb-2">
-          {bot.name}{" "}
-          <span className={`text-xs ${bot.isNotActive ? "text-red-400" : "text-green-400"}`}>
-            {bot.isNotActive ? "Stopped" : "Active"}
-          </span>
+      <a className="underline text-gray-50" href="/" >back</a>
+      <div className="py-4 max-w-2xl mx-auto text-gray-200">
 
-        </h2>
         {bot.isNotActive ? (
           <button
             onClick={() => handleStart(bot.id)}
@@ -83,55 +77,149 @@ export default function BotInfo() {
             Stop
           </button>
         )}
+      </div >
+
+      <div className="p-0 grid gap-3 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 max-w-2xl m-auto">
+
+        <div
+          className={`bg-gray-900 rounded-lg shadow-md p-4 flex flex-col justify-between
+                  ${bot.isNotActive ? 'text-gray-500' : 'text-gray-200'}`}
+        >
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">
+                {bot.name}
+              </span>
+              <div className="text-sm">
+                <span className="text- text-gray-400">{bot.leverage}x </span>
+                <span className="text-up font-semibold">{bot.totalWins}</span>/
+                <span className="text-down font-semibold">{bot.totalLosses}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-sm">
+                {/* additional stats here if needed */}
+              </div>
+            </div>
+
+            <div className="ml-auto text-right">
+              <div className="text-sm font-semibold">
+                {Number(bot.currentCapital).toFixed(2)}
+              </div>
+              <p className="text-xs text-gray-400">{formatDateTime(bot.lastScanned)}</p>
+            </div>
+          </div>
+
+          <div className="flex pt-2 justify-between items-center">
+            <div className="flex flex-col">
+              <span className="text-xs label">TakeProfit:</span>
+              <span>
+                %{Number(bot.takeProfit).toFixed(2)}
+              </span>
+            </div>
+
+            <div className="flex flex-col items-end text-right">
+              <span className="text-xs label">Stop Loss:</span>
+              <span>
+                %{Number(bot.stopLoss).toFixed(2)}
+              </span>
+            </div>
+          </div>
 
 
+          {bot.inPos && (
+            <div className={`mt-4 pt-4 border-t text-gray-100 ${bot.orderType === "LONG" ? "border-up" :
+              bot.orderType === "SHORT" ? "border-up" : "border-gray-700"
+              }`}>
+              <div className="grid grid-cols-3 gap-x-6 gap-y-2 text-sm">
+                <div className="flex flex-col">
+                  <span className="text-xs label">Order Type:</span>
+                  <span className={`text-xs ${bot.orderType === "LONG" ? "text-up" : bot.orderType === "SHORT" ? "text-down" : "text-gray-300"}`}>
+                    {bot.orderType}
+                  </span>
+                </div>
+                <div></div>
+                <div className="flex flex-col items-end text-right">
+                  <span className="text-xs label">Scanned:</span>
+                  <span>{formatDateTime(bot.orderScannedTime)}</span>
+                </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 gap-x-6 gap-y-2">
-          <InfoRow label="ID" value={bot.id} />
-          <InfoRow label="Name" value={bot.name} />
-          <InfoRow label="Symbol" value={bot.symbol} />
-          <InfoRow label="Time Frame" value={bot.timeFrame} />
-          <InfoRow label="Strategy Name" value={bot.strategyName} />
-          <InfoRow label="Current Capital" value={Number(bot.currentCapital).toFixed(2)} />
-          <InfoRow label="Last Scanned" value={formatDateTime(bot.lastScanned).toLocaleString()} />
-          <InfoRow label="Wins / Losses" value={`${bot.totalWins} / ${bot.totalLosses}`} />
-          <InfoRow label="Streaks" value={`W: ${bot.currentWinsStreak} (Max: ${bot.maxWinsStreak}), L: ${bot.currentLossStreak} (Max: ${bot.maxLossStreak})`} />
-          <InfoRow label="Leverage" value={bot.leverage} />
-          <InfoRow label="Take Profit" value={`${bot.takeProfit}%`} />
-          <InfoRow label="Stop Loss" value={`${bot.stopLoss}%`} />
+                <div className="flex flex-col">
+                  <span className="text-xs label">PNL:</span>
+                  <span className={
+                    bot.pnl > 0 ? "text-up" :
+                      bot.pnl < 0 ? "text-down" :
+                        ""
+                  }>
+                    {Number(bot.pnl).toFixed(2)}
+                  </span>
+                </div>
+
+                <div className="flex flex-col">
+                  <span className="text-xs label">Created Time:</span>
+                  <span>{formatDateTime(bot.orderCreatedTime)}</span>
+                </div>
+
+                {/* Column 3 - right aligned */}
+                <div className="flex flex-col items-end text-right">
+                  <span className="text-xs label">ROE:</span>
+                  <span className={
+                    bot.roe > 0 ? "text-up" :
+                      bot.roe < 0 ? "text-down" :
+                        ""
+                  }>
+                    %{Number(bot.roe).toFixed(2)}
+                  </span>
+                </div>
+
+
+                <div className="flex flex-col">
+                  <span className="text-xs label">Entry Price:</span>
+                  <span>{bot.orderEntryPrice}</span>
+                </div>
+
+                <div className="flex flex-col">
+                  <span className="text-xs label">Stop Loss:</span>
+                  <span>{Number(bot.orderStopLoss).toFixed(2)}
+                    <span className="text-xs pl-1">
+                      ({getPercentage(bot.orderEntryPrice, bot.orderStopLoss, bot.leverage)}%)
+                    </span>
+                  </span>
+                </div>
+
+
+                <div className="flex flex-col items-end text-right">
+                  <span className="text-xs label">Take Profit:</span>
+                  <span>{Number(bot.orderTakeProfit).toFixed(2)}
+                    <span className="text-xs pl-1">
+                      ({getPercentage(bot.orderEntryPrice, bot.orderTakeProfit, bot.leverage)}%)
+                    </span>
+                  </span>
+                </div>
+
+                <div className="flex flex-col">
+                  <span className="text-xs label">Capital:</span>
+                  <span className="">{Number(bot.orderCapital).toFixed(2)}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs label">Capital with Leverage:</span>
+                  <span className="">{Number(bot.orderCapitalWithLeverage).toFixed(2)}</span>
+                </div>
+
+                <div className="flex flex-col items-end text-right">
+                  <span className="text-xs label">Fee:</span>
+                  <span>{Number(bot.orderFee).toFixed(2)}</span>
+                </div>
+
+              </div>
+            </div>
+
+          )}
+
 
         </div>
-        {bot.inPos && (
-          <div className="grid grid-cols-2 sm:grid-cols-2 gap-x-6 gap-y-2 border-t pt-3 border-gray-700" >
-            <InfoRow
-              label="Order Type"
-              value={bot.orderType}
-              color={bot.orderType === "LONG" ? "text-up" : bot.orderType === "SHORT" ? "text-down" : "text-gray-300"}
-            />
-            <InfoRow label="Scanned" value={formatDateTime(bot.orderScannedTime).toLocaleString()} />
-            <InfoRow label="Quantity" value={Number(bot.orderQuantity).toFixed(2)} />
-            <InfoRow label="Capital" value={Number(bot.orderCapital).toFixed(2)} />
-            <InfoRow label="Capital With Leverage" value={Number(bot.orderCapitalWithLeverage).toFixed(2)} />
-            <InfoRow label="Entry Price" value={Number(bot.orderEntryPrice).toFixed(2)} />
-            <InfoRow label="Stop Loss" value={Number(bot.orderStopLoss).toFixed(2)} />
-            <InfoRow label="Take Profit" value={Number(bot.orderTakeProfit).toFixed(2)} />
-            <InfoRow label="Fee" value={Number(bot.orderFee).toFixed(2)} />
-            <InfoRow
-              label="PnL"
-              value={Number(bot.pnl).toFixed(2)}
-              color={bot.pnl > 0 ? "text-up" : bot.pnl < 0 ? "text-down" : "text-gray-300"}
-            />
-            <InfoRow
-              label="ROE"
-              value={Number(bot.roe).toFixed(2)}
-              color={bot.roe > 0 ? "text-up" : bot.roe < 0 ? "text-down" : "text-gray-300"}
-            />
-            <InfoRow label="Created At" value={formatDateTime(bot.orderCreatedTime).toLocaleString()} />
 
-          </div>
-        )}
 
-      </div>
+      </div >
+
       <div className="p-6 max-w-4xl mx-auto mt-6 space-y-4">
         <OrderList orders={orders} />
       </div>

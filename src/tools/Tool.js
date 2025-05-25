@@ -26,3 +26,11 @@ export function formatDateTime(dateString) {
 
   return `${hours}:${minutes}:${seconds} ${day}.${month}.${year}`;
 }
+
+export function getPercentage(entryPrice, targetPrice, leverage) {
+  if (entryPrice === 0) {
+    return 0;
+  }
+  const percent = ((targetPrice - entryPrice) / entryPrice) * 100 * leverage;
+  return percent.toFixed(2);
+}
