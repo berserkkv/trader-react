@@ -48,7 +48,7 @@ export default function BotList({ bots }) {
 
           {bot.inPos && (
             <div className={`mt-2 pt-2 border-t text-gray-100 ${bot.orderType === "LONG" ? "border-up" :
-              bot.orderType === "SHORT" ? "border-up" : "border-gray-700"
+              bot.orderType === "SHORT" ? "border-down" : "border-gray-700"
               }`}>
               <div className="grid grid-cols-3 gap-x-6 gap-y-2 text-sm">
 
@@ -90,7 +90,7 @@ export default function BotList({ bots }) {
                   <span className="text-xs label">Stop Loss:</span>
                   <span>{Number(bot.orderStopLoss).toFixed(2)}
                     <span className="text-xs pl-1">
-                      ({getPercentage(bot.orderEntryPrice, bot.orderStopLoss, bot.leverage)}%)
+                      ({getPercentage(bot.orderEntryPrice, bot.orderStopLoss, bot.leverage, bot.orderType)}%)
                     </span>
                   </span>
                 </div>
@@ -100,7 +100,7 @@ export default function BotList({ bots }) {
                   <span className="text-xs label">Take Profit:</span>
                   <span>{Number(bot.orderTakeProfit).toFixed(2)}
                     <span className="text-xs pl-1">
-                      ({getPercentage(bot.orderEntryPrice, bot.orderTakeProfit, bot.leverage)}%)
+                      ({getPercentage(bot.orderEntryPrice, bot.orderTakeProfit, bot.leverage, bot.orderType)}%)
                     </span>
                   </span>
                 </div>

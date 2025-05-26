@@ -180,7 +180,7 @@ export default function BotInfo() {
                   <span className="text-xs label">Stop Loss:</span>
                   <span>{Number(bot.orderStopLoss).toFixed(2)}
                     <span className="text-xs pl-1">
-                      ({getPercentage(bot.orderEntryPrice, bot.orderStopLoss, bot.leverage)}%)
+                      ({getPercentage(bot.orderEntryPrice, bot.orderStopLoss, bot.leverage, bot.orderType)}%)
                     </span>
                   </span>
                 </div>
@@ -190,7 +190,7 @@ export default function BotInfo() {
                   <span className="text-xs label">Take Profit:</span>
                   <span>{Number(bot.orderTakeProfit).toFixed(2)}
                     <span className="text-xs pl-1">
-                      ({getPercentage(bot.orderEntryPrice, bot.orderTakeProfit, bot.leverage)}%)
+                      ({getPercentage(bot.orderEntryPrice, bot.orderTakeProfit, bot.leverage, bot.orderType)}%)
                     </span>
                   </span>
                 </div>
@@ -220,20 +220,10 @@ export default function BotInfo() {
 
       </div >
 
-      <div className="p-6 max-w-4xl mx-auto mt-6 space-y-4">
+      <div className="py-4 max-w-2xl mx-auto text-gray-200">
         <OrderList orders={orders} />
       </div>
     </div >
-
-  );
-}
-
-function InfoRow({ label, value, color = "text-gray-300" }) {
-  return (
-    <div className="flex flex-col border-gray-800 py-1">
-      <span className="text-xs text-gray-400">{label}</span>
-      <span className={`text-sm font-medium ${color}`}>{value}</span>
-    </div>
 
   );
 }

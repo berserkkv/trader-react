@@ -27,10 +27,16 @@ export function formatDateTime(dateString) {
   return `${hours}:${minutes}:${seconds} ${day}.${month}.${year}`;
 }
 
-export function getPercentage(entryPrice, targetPrice, leverage) {
+export function getPercentage(entryPrice, targetPrice, leverage, orderType) {
   if (entryPrice === 0) {
     return 0;
   }
-  const percent = ((targetPrice - entryPrice) / entryPrice) * 100 * leverage;
+  let percent = 0;
+  if (orderType === "LONG") {
+    percent = ((targetPrice - entryPrice) / entryPrice) * 100 * leverage;
+  } else if (orderType === "SHORT") {
+    percent = ((entryPrice - targetPrice) / entryPrice) * 100 * leverage;
+  }
+
   return percent.toFixed(2);
 }
