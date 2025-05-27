@@ -15,7 +15,7 @@ function App() {
 
   return (
     <Router>
-      <div className="p-4">
+      <div className="">
         <Routes>
           <Route
             path="/"

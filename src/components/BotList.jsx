@@ -33,12 +33,12 @@ export default function BotList() {
   }, [filters]);
 
   return (
-    <div className="p-0 grid gap-3 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 max-w-2xl m-auto">
+    <div className="px-2 grid gap-3 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 max-w-2xl m-auto">
 
 
 
       {/* 🔍 Filter dropdowns */}
-      <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-5 sm:grid-cols-5 gap-4 mb-6">
         <div className="flex flex-col space-y-1">
           <label className="text-xs text-gray-500 font-medium">Active</label>
 
