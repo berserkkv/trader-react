@@ -1,23 +1,17 @@
-import { useEffect, useState } from "react";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { getOrders, getBots } from "./api/Api";
 import OrderList from "./components/OrderList";
 import BotList from "./components/BotList";
 import BotInfo from "./components/BotInfo";
 import AddBotForm from "./components/AddBotForm";
+import BotStatistics from "./components/BotStatistics";
 
 function App() {
-  const [bots, setBots] = useState([]);
 
 
-  const fetchBots = async () => {
-    const res = await getBots();
-    setBots(res.data);
-  };
 
-  useEffect(() => {
-    fetchBots();
-  }, []);
+
 
   return (
     <Router>
@@ -27,12 +21,27 @@ function App() {
             path="/"
             element={
               <>
-                <a href="/bots/create" className="text-blue-500 hover:underline">Create new bot</a>
 
-                <BotList bots={bots} />
+                <div className="">
+                  {/* Left Side - Links */}
+                  <div className="flex">
+                    <a href="/bots/create" className="text-blue-500 mr-3 hover:underline block">Create new bot</a>
+                    <a href="/statistics" className="text-blue-500 hover:underline block">Statistics</a>
+                  </div>
+
+                  {/* Center - BotList */}
+                  <div >
+                    <BotList />
+                  </div>
+                </div>
+
+
+
+
               </>
             }
           />
+          <Route path="/statistics" element={<BotStatistics />} />
           <Route path="/bots/create" element={<AddBotForm />} />
           <Route path="/bots/:id" element={<BotInfo />} />
         </Routes>
