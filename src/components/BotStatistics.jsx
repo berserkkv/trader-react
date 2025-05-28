@@ -1,53 +1,58 @@
 import { useEffect, useState } from "react";
-import { getBotsStatistics } from "../api/Api";
+import { getStats } from "../api/Api";
+import {
+    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from "recharts";
 
 export default function BotStatistics() {
-    const [st, setSt] = useState([]);
-
-    const fetchBotsStatistics = async () => {
-        const res = await getBotsStatistics();
-        setSt(res.data);
-    };
+    const [data, setData] = useState({
+        Sol15: [],
+        Sol1: [],
+        Eth15: [],
+        Eth1: [],
+    });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetchBotsStatistics();
+        getStats()
+            .then(res => {
+                const format = (arr) =>
+                    arr.map(s => ({
+                        time: new Date(s.time).toLocaleString(),
+                        balance: s.balance,
+                    }));
+                setData({
+                    Sol15: format(res.data.Sol15),
+                    Sol1: format(res.data.Sol1),
+                    Eth15: format(res.data.Eth15),
+                    Eth1: format(res.data.Eth1),
+                });
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error("Failed to fetch statistics", err);
+                setLoading(false);
+            });
     }, []);
 
+    if (loading) return <div>Loading...</div>;
+
     return (
-        <div className="p-4 max-w-4xl mx-auto space-y-6 text-gray-200">
-            <h2 className="text-xl font-semibold mb-4">Bot Statistics</h2>
-            <table className="w-full table-auto border-collapse border border-gray-300">
-                <thead>
-                    <tr className="">
-                        <th className="border border-gray-500 px-4 py-2">Strategy</th>
-                        <th className="border border-gray-500 px-4 py-2">Total</th>
-                        <th className="border border-gray-500 px-4 py-2">1m</th>
-                        <th className="border border-gray-500 px-4 py-2">5m</th>
-                        <th className="border border-gray-500 px-4 py-2">15m</th>
-                        <th className="border border-gray-500 px-4 py-2">Bot Count</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {st.length === 0 ? (
-                        <tr>
-                            <td colSpan="6" className="text-center py-4">
-                                Loading...
-                            </td>
-                        </tr>
-                    ) : (
-                        st.map((stat, idx) => (
-                            <tr key={idx} className={idx % 2 === 0 ? "" : "bg-gray-800"}>
-                                <td className="border border-gray-500 px-4 py-2">{stat.StrategyName}</td>
-                                <td className="border border-gray-500 px-4 py-2">{stat.Total.toFixed(2)}</td>
-                                <td className="border border-gray-500 px-4 py-2">{stat.M1.toFixed(2)}</td>
-                                <td className="border border-gray-500 px-4 py-2">{stat.M5.toFixed(2)}</td>
-                                <td className="border border-gray-500 px-4 py-2">{stat.M15.toFixed(2)}</td>
-                                <td className="border border-gray-500 px-4 py-2">{stat.BotCount}</td>
-                            </tr>
-                        ))
-                    )}
-                </tbody>
-            </table >
-        </div >
+        <div className="w-full h-[500px]">
+            <h2 className="text-xl font-bold mb-4">Strategy Balance Over Time</h2>
+            <ResponsiveContainer width="100%" height="100%">
+                <LineChart>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="time" type="category" allowDuplicatedCategory={false} />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line data={data.Sol15} type="monotone" dataKey="balance" name="SOL 15m" stroke="#8884d8" dot={false} />
+                    <Line data={data.Sol1} type="monotone" dataKey="balance" name="SOL 1m" stroke="#82ca9d" dot={false} />
+                    <Line data={data.Eth15} type="monotone" dataKey="balance" name="ETH 15m" stroke="#ffc658" dot={false} />
+                    <Line data={data.Eth1} type="monotone" dataKey="balance" name="ETH 1m" stroke="#ff7300" dot={false} />
+                </LineChart>
+            </ResponsiveContainer>
+        </div>
     );
 }
