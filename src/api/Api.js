@@ -17,14 +17,9 @@ export const getOrders = () => axios.get(ORDER_API);
 export const createOrder = (order) => axios.post(ORDER_API, order);
 export const updateOrder = (order) => axios.put(ORDER_API, order);
 export const getOrdersByBotId = (botId) => axios.get(ORDER_API + "/by-bot", { params: { botId } });
+export const getOrderStatistics = (botId) => axios.get(ORDER_API + "/statistics", { params: { botId } });
+
 
 
 const PRICE_API = "http://" + import.meta.env.VITE_API_URL + ":8080/api/prices";
 export const getPrice = () => axios.get(PRICE_API);
-
-
-const STATS_API = "http://" + import.meta.env.VITE_API_URL + ":8080/api/statistics";
-export const getStats = () => axios.get(STATS_API);
-export const getStatsBySymbol = (symbol) => axios.get(`${STATS_API}/symbol/${symbol}`);
-export const getStatsByTimeframe = (tf) => axios.get(`${STATS_API}/timeframe/${tf}`);
-export const getStatsByStrategy = (strategy) => axios.get(`${STATS_API}/strategy/${strategy}`);

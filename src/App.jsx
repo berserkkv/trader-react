@@ -5,7 +5,6 @@ import OrderList from "./components/OrderList";
 import BotList from "./components/BotList";
 import BotInfo from "./components/BotInfo";
 import AddBotForm from "./components/AddBotForm";
-import BotStatistics from "./components/BotStatistics";
 
 function App() {
 
@@ -41,7 +40,7 @@ function App() {
               </>
             }
           />
-          <Route path="/statistics" element={<BotStatistics />} />
+          <Route path="/statistics" element={<BotInfo />} />
           <Route path="/bots/create" element={<AddBotForm />} />
           <Route path="/bots/:id" element={<BotInfo />} />
         </Routes>

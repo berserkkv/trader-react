@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getBotById, getOrders, getOrdersByBotId, startBot, stopBot } from "../api/Api";
 import OrderList from "./OrderList";
 import { formatDateTime, getPercentage } from "../tools/Tool";
+import Chart from "./Chart";
 
 export default function BotInfo() {
   const { id } = useParams();
@@ -219,6 +220,9 @@ export default function BotInfo() {
 
 
       </div >
+      <div className="py-4 max-w-2xl mx-auto text-gray-200">
+        <Chart botId={id} />
+      </div>
 
       <div className="py-4 max-w-2xl mx-auto text-gray-200">
         <OrderList orders={orders} />
