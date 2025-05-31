@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getBotById, getOrders, getOrdersByBotId, startBot, stopBot } from "../api/Api";
+import { closePosition, getBotById, getOrders, getOrdersByBotId, startBot, stopBot } from "../api/Api";
 import OrderList from "./OrderList";
 import { formatDateTime, getPercentage } from "../tools/Tool";
 import Chart from "./Chart";
@@ -39,6 +39,11 @@ export default function BotInfo() {
     stopBot(bot.id).then(() => reloadBot());
   };
 
+  const handleClose = () => {
+    closePosition(bot.id).then(() => reloadBot());
+  }
+
+
   const reloadBot = () => {
     getBotById(id).then(res => setBot(res.data));
   };
@@ -76,6 +81,15 @@ export default function BotInfo() {
             className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
           >
             Stop
+          </button>
+        )}
+
+        {bot.inPos && (
+          <button
+            onClick={() => handleClose(bot.id)}
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+          >
+            Close Position
           </button>
         )}
       </div >
@@ -128,7 +142,7 @@ export default function BotInfo() {
 
           {bot.inPos && (
             <div className={`mt-4 pt-4 border-t text-gray-100 ${bot.orderType === "LONG" ? "border-up" :
-              bot.orderType === "SHORT" ? "border-up" : "border-gray-700"
+              bot.orderType === "SHORT" ? "border-down" : "border-gray-700"
               }`}>
               <div className="grid grid-cols-3 gap-x-6 gap-y-2 text-sm">
                 <div className="flex flex-col">

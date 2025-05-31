@@ -6,7 +6,9 @@ const Chart = ({ botId }) => {
     const chartContainerRef = useRef();
 
     useEffect(() => {
-        if (!botId) return;
+        if (!botId) {
+
+        }
 
         const chart = createChart(chartContainerRef.current, {
             width: chartContainerRef.current.clientWidth,
@@ -50,7 +52,7 @@ const Chart = ({ botId }) => {
         getOrderStatistics(botId)
             .then((response) => {
                 const data = response.data.map((point) => ({
-                    time: Math.floor(new Date(point.time).getTime() / 1000), // UNIX timestamp (in seconds)
+                    time: Math.floor(new Date(point.time).getTime() / 1000),
                     value: point.pnl,
                 }));
                 lineSeries.setData(data);
