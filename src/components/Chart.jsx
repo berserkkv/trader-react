@@ -56,6 +56,13 @@ const Chart = ({ botId }) => {
                     value: point.pnl,
                 }));
                 lineSeries.setData(data);
+                lineSeries.createPriceLine({
+                    price: 0,
+                    color: '#ef4444',
+                    lineWidth: 1,
+                    lineStyle: 0,
+                    axisLabelVisible: false,
+                });
             })
             .catch((err) => {
                 console.error('Failed to fetch statistics:', err);

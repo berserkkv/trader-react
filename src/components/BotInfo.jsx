@@ -66,7 +66,7 @@ export default function BotInfo() {
   return (
     <div>
       <a className="underline text-gray-50" href="/" >back</a>
-      <div className="py-4 max-w-2xl mx-auto text-gray-200">
+      <div className="py-4 max-w-2xl mx-auto text-gray-200 flex gap-2">
 
         {bot.isNotActive ? (
           <button
@@ -87,7 +87,7 @@ export default function BotInfo() {
         {bot.inPos && (
           <button
             onClick={() => handleClose(bot.id)}
-            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+            className="bg-blue-900 hover:bg-blue-950 text-white px-4 py-2 rounded"
           >
             Close Position
           </button>
@@ -135,6 +135,14 @@ export default function BotInfo() {
               <span className="text-xs label">Stop Loss:</span>
               <span>
                 %{Number(bot.stopLoss).toFixed(2)}
+              </span>
+            </div>
+          </div>
+          <div className="flex pt-2 justify-between items-center">
+            <div className="flex flex-col">
+              <span className="text-xs label">Log:</span>
+              <span>
+                {bot.strategyInfo}
               </span>
             </div>
           </div>
