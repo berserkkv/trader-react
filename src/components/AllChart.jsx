@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart, LineSeries } from 'lightweight-charts';
-import { getAllOrderStatistics } from '../api/Api';
+import { getAllOrderStatistics, getAllPairOrderStatistics } from '../api/Api';
 
 const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFA500', '#800080'];
 
@@ -55,7 +55,7 @@ const AllChart = () => {
     useEffect(() => {
         if (!chartRef.current) return;
 
-        getAllOrderStatistics()
+        getAllPairOrderStatistics()
             .then((res) => {
                 const data = res.data;
 

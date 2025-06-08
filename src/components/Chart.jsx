@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { createChart, LineSeries } from 'lightweight-charts';
-import { getOrderStatistics } from '../api/Api';
+import { getOrderStatistics, getPairOrderStatistics } from '../api/Api';
 
 const Chart = ({ botId }) => {
     const chartContainerRef = useRef();
@@ -49,7 +49,8 @@ const Chart = ({ botId }) => {
             crossHairMarkerRadius: 2,
         });
 
-        getOrderStatistics(botId)
+        // getOrderStatistics(botId)
+        getPairOrderStatistics(botId)
             .then((response) => {
                 const data = response.data.map((point) => ({
                     time: Math.floor(new Date(point.time).getTime() / 1000),

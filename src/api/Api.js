@@ -20,6 +20,24 @@ export const getOrderStatistics = (botId) => axios.get(ORDER_API + "/statistics"
 export const getAllOrderStatistics = () => axios.get(ORDER_API + "/statistics");
 
 
+const PAIR_BOTS_API = "http://" + import.meta.env.VITE_API_URL + ":8080/api/pair_bots";
+export const getPairBots = (params = {}) => {
+    return axios.get(PAIR_BOTS_API, { params });
+}
+export const getPairBotById = (id) => axios.get(PAIR_BOTS_API + "/" + id);
+export const createPairBot = (bot) => axios.post(PAIR_BOTS_API, bot);
+export const stopPairBot = (id) => axios.patch(PAIR_BOTS_API + "/" + id + "/stop");
+export const startPairBot = (id) => axios.patch(PAIR_BOTS_API + "/" + id + "/start");
+export const closePairPosition = (id) => axios.patch(PAIR_BOTS_API + "/" + id + "/close_position");
+
+const PAIR_ORDER_API = "http://" + import.meta.env.VITE_API_URL + ":8080/api/orders";
+export const getPairOrders = () => axios.get(PAIR_ORDER_API);
+export const createPairOrder = (order) => axios.post(PAIR_ORDER_API, order);
+export const updatePairOrder = (order) => axios.put(PAIR_ORDER_API, order);
+export const getPairOrdersByBotId = (botId) => axios.get(PAIR_ORDER_API + "/by-bot", { params: { botId } });
+export const getPairOrderStatistics = (botId) => axios.get(PAIR_ORDER_API + "/statistics", { params: { botId } });
+export const getAllPairOrderStatistics = () => axios.get(PAIR_ORDER_API + "/statistics");
+
 
 
 const PRICE_API = "http://" + import.meta.env.VITE_API_URL + ":8080/api/prices";
