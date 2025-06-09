@@ -23,7 +23,6 @@ export default function PairBotInfo() {
 
         getPairOrdersByBotId(id)
             .then((res) => {
-                console.log("Orders fetched:", res.data);
                 setOrders(res.data);
             })
             .catch((err) => {

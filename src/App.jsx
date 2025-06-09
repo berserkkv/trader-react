@@ -35,7 +35,7 @@ function App() {
                   {/* Center - BotList */}
                   <div >
                     <PairBotList />
-                    {/* <BotList /> */}
+                    <BotList />
 
                   </div>
                 </div>
