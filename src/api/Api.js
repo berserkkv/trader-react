@@ -30,7 +30,7 @@ export const stopPairBot = (id) => axios.patch(PAIR_BOTS_API + "/" + id + "/stop
 export const startPairBot = (id) => axios.patch(PAIR_BOTS_API + "/" + id + "/start");
 export const closePairPosition = (id) => axios.patch(PAIR_BOTS_API + "/" + id + "/close_position");
 
-const PAIR_ORDER_API = "http://" + import.meta.env.VITE_API_URL + ":8080/api/orders";
+const PAIR_ORDER_API = "http://" + import.meta.env.VITE_API_URL + ":8080/api/pair_orders";
 export const getPairOrders = () => axios.get(PAIR_ORDER_API);
 export const createPairOrder = (order) => axios.post(PAIR_ORDER_API, order);
 export const updatePairOrder = (order) => axios.put(PAIR_ORDER_API, order);

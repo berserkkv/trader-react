@@ -125,9 +125,9 @@ export default function PairBotInfo() {
 
                     <div className="flex pt-2 justify-between items-center">
                         <div className="flex flex-col">
-                            <span className="text-xs label">Log:</span>
+                            <span className="text-xs label">ZScore:</span>
                             <span>
-                                {bot.strategyInfo}
+                                {Number(bot.zScore).toFixed(2)}
                             </span>
                         </div>
                     </div>

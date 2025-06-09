@@ -145,8 +145,9 @@ export default function PairBotList() {
                                 </a>
                                 <div className="text-sm">
                                     <span className="text-gray-400">{bot.leverage}x </span>
-                                    <span className="text-up font-semibold">{bot.totalWins}</span>/
+                                    <span className="ml-1 text-up font-semibold">{bot.totalWins}</span>/
                                     <span className="text-down font-semibold">{bot.totalLosses}</span>
+                                    <span className="ml-1 text-gray-300"> {Number(bot.zScore).toFixed(2)}</span>
                                 </div>
                             </div>
 
