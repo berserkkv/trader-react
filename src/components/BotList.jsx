@@ -161,7 +161,9 @@ export default function BotList() {
                   {formatDateTime(bot.lastScanned)}
                 </p>
               </div>
+
             </div>
+            <div className="text-xs text-gray-400">{bot.strategyInfo}</div>
 
             {bot.inPos && (
               <div

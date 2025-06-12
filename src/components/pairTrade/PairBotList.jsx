@@ -148,6 +148,7 @@ export default function PairBotList() {
                                     <span className="ml-1 text-up font-semibold">{bot.totalWins}</span>/
                                     <span className="text-down font-semibold">{bot.totalLosses}</span>
                                     <span className="ml-1 text-gray-300"> {Number(bot.zScore).toFixed(2)}</span>
+
                                 </div>
                             </div>
 
@@ -162,6 +163,7 @@ export default function PairBotList() {
                                     {bot.inPos ? formatDateTime(bot.orderScannedTime2) : formatDateTime(bot.lastScanned)}
                                 </p>
                             </div>
+
                         </div>
 
                         {bot.inPos && (

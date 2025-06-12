@@ -26,8 +26,10 @@ export default function PairOrderList({ orders }) {
             <tr className="bg-gray-800 text-xs tracking-wider text-gray-400">
               <th className="px-2 py-2 border border-gray-700">T</th>
               <th className="px-2 py-2 border border-gray-700">PNL</th>
-              <th className="px-2 py-2 border border-gray-700">Entry Price</th>
-              <th className="px-2 py-2 border border-gray-700">Exit Price</th>
+              <th className="px-2 py-2 border border-gray-700">Entry Price 1</th>
+              <th className="px-2 py-2 border border-gray-700">Exit Price 1</th>
+              <th className="px-2 py-2 border border-gray-700">Entry Price 2</th>
+              <th className="px-2 py-2 border border-gray-700">Exit Price 2</th>
               <th className="px-2 py-2 border border-gray-700">Created</th>
               <th className="px-2 py-2 border border-gray-700">Closed</th>
             </tr>
@@ -39,17 +41,20 @@ export default function PairOrderList({ orders }) {
                 className="text-center border-t border-gray-700 hover:bg-gray-800 transition-colors"
               >
                 <td className="px-2 py-2 border border-gray-700 text-center">
-                  {order.type === "LONG" ? <ArrowUp /> : <ArrowDown />}
+                  {order.type1 === "LONG" ? <ArrowUp /> : <ArrowDown />}
+                  {order.type2 === "LONG" ? <ArrowUp /> : <ArrowDown />}
                 </td>
 
                 <td
-                  className={`px-2 py-2 border border-gray-700 ${order.profitLossPercent >= 0 ? "text-up" : "text-down"
+                  className={`px-2 py-2 border border-gray-700 ${order.profitLossPercent1 + order.profitLossPercent2 >= 0 ? "text-up" : "text-down"
                     }`}
                 >
-                  {Number(order.profitLoss).toFixed(2)} ({Number(order.profitLossPercent).toFixed(2)}%)
+                  {Number(order.profitLoss1 + order.profitLoss2).toFixed(2)} ({Number(order.profitLossPercent1 + order.profitLossPercent2).toFixed(2)}%)
                 </td>
-                <td className="px-2 py-2 border border-gray-700">{Number(order.entryPrice).toFixed(2)}</td>
-                <td className="px-2 py-2 border border-gray-700">{Number(order.exitPrice).toFixed(2)}</td>
+                <td className="px-2 py-2 border border-gray-700">{Number(order.entryPrice1).toFixed(2)}</td>
+                <td className="px-2 py-2 border border-gray-700">{Number(order.exitPrice1).toFixed(2)}</td>
+                <td className="px-2 py-2 border border-gray-700">{Number(order.entryPrice2).toFixed(2)}</td>
+                <td className="px-2 py-2 border border-gray-700">{Number(order.exitPrice2).toFixed(2)}</td>
                 <td className="px-2 text-xs py-2 border border-gray-700">
                   {formatDateTime(order.createdTime)}
                 </td>
