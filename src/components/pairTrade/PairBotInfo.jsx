@@ -5,6 +5,7 @@ import { formatDateTime, getPercentage } from "../../tools/Tool";
 import OrderList from "../OrderList";
 import Chart from "../Chart";
 import PairOrderList from "./PairOrderList";
+import PairChart from "./PairChart";
 export default function PairBotInfo() {
     const { id } = useParams();
     const [bot, setBot] = useState(null);
@@ -266,7 +267,7 @@ export default function PairBotInfo() {
 
             </div >
             <div className="py-4 max-w-2xl mx-auto text-gray-200">
-                <Chart botId={id} />
+                <PairChart botId={id} />
             </div>
 
             <div className="py-4 max-w-2xl mx-auto text-gray-200">
