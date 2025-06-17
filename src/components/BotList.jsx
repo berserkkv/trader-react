@@ -38,7 +38,7 @@ export default function BotList() {
 
 
       {/* 🔍 Filter dropdowns */}
-      <div className="grid grid-cols-5 sm:grid-cols-5 gap-4 mb-6">
+      {/* <div className="grid grid-cols-5 sm:grid-cols-5 gap-4 my-1">
         <div className="flex flex-col space-y-1">
           <label className="text-xs text-gray-500 font-medium">Active</label>
 
@@ -124,7 +124,7 @@ export default function BotList() {
             <option value="true">Open</option>
           </select>
         </div>
-      </div>
+      </div> */}
 
 
 
@@ -132,128 +132,134 @@ export default function BotList() {
       {bots.length === 0 ? (
         <div className="text-center text-gray-400 py-8">No bots found.</div>
       ) : (
-        bots.map((bot) => (
-          <div
-            key={bot.id}
-            className={`bg-gray-900 rounded-lg shadow-md p-4 flex flex-col justify-between ${bot.isNotActive ? "text-gray-500" : "text-gray-200"
-              }`}
-          >
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <a href={`/bots/${bot.id}`} className="text-sm hover:underline">
-                  {bot.name}
-                </a>
-                <div className="text-sm">
-                  <span className="text-gray-400">{bot.leverage}x </span>
-                  <span className="text-up font-semibold">{bot.totalWins}</span>/
-                  <span className="text-down font-semibold">{bot.totalLosses}</span>
+        <div className="flex flex-col gap-4">
+          {bots.map((bot) => (
+            <div
+              key={bot.id}
+              className={`bg-gray-900 rounded-lg shadow-md p-4 flex flex-col justify-between ${bot.isNotActive ? "text-gray-500" : "text-gray-200"
+                }`}
+            >
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <a href={`/bots/${bot.id}`} className="text-sm hover:underline">
+                    {bot.name}
+                  </a>
+                  <div className="text-sm">
+                    <span className="text-gray-400">{bot.leverage}x </span>
+                    <span className="text-up font-semibold">{bot.totalWins}</span>/
+                    <span className="text-down font-semibold">{bot.totalLosses}</span>
+                  </div>
                 </div>
-              </div>
 
-              <div className="ml-auto text-right">
-                <div className="text-sm font-semibold">
-                  <span className="text-xs text-gray-400 mr-1">
-                    ({Number(bot.currentCapital + bot.orderCapital).toFixed(2)})
-                  </span>
-                  {Number(bot.currentCapital).toFixed(2)}
+                <div className="ml-auto text-right">
+                  <div className="text-sm font-semibold">
+                    <span className="text-xs text-gray-400 mr-1">
+                      ({Number(bot.currentCapital + bot.orderCapital).toFixed(2)})
+                    </span>
+                    {Number(bot.currentCapital).toFixed(2)}
+                  </div>
+                  <p className="text-xs text-gray-400">
+                    {formatDateTime(bot.lastScanned)}
+                  </p>
                 </div>
-                <p className="text-xs text-gray-400">
-                  {formatDateTime(bot.lastScanned)}
-                </p>
-              </div>
 
+              </div>
+              <div className="text-xs text-gray-400">{bot.strategyInfo}</div>
+
+              {bot.inPos && (
+                <div
+                  className={`mt-2 pt-2 border-t text-gray-100 ${bot.orderType === "LONG"
+                    ? "border-up"
+                    : bot.orderType === "SHORT"
+                      ? "border-down"
+                      : "border-gray-700"
+                    }`}
+                >
+                  <div className="grid grid-cols-3 gap-x-6 gap-y-2 text-sm">
+                    <div className="flex flex-col">
+                      <span className="text-xs label">PNL:</span>
+                      <span
+                        className={
+                          bot.pnl > 0
+                            ? "text-up"
+                            : bot.pnl < 0
+                              ? "text-down"
+                              : ""
+                        }
+                      >
+                        {Number(bot.pnl).toFixed(2)}
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col">
+                      <span className="text-xs label">Created Time:</span>
+                      <span>{formatDateTime(bot.orderCreatedTime)}</span>
+                    </div>
+
+                    <div className="flex flex-col items-end text-right">
+                      <span className="text-xs label">ROE:</span>
+                      <span
+                        className={
+                          bot.roe > 0
+                            ? "text-up"
+                            : bot.roe < 0
+                              ? "text-down"
+                              : ""
+                        }
+                      >
+                        %{Number(bot.roe).toFixed(2)}
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col">
+                      <span className="text-xs label">Entry Price:</span>
+                      <span>{bot.orderEntryPrice}</span>
+                    </div>
+
+                    <div className="flex flex-col">
+                      <span className="text-xs label">Stop Loss:</span>
+                      <span>
+                        {Number(bot.orderStopLoss).toFixed(2)}
+                        <span className="text-xs pl-1">
+                          (
+                          {getPercentage(
+                            bot.orderEntryPrice,
+                            bot.orderStopLoss,
+                            bot.leverage,
+                            bot.orderType
+                          )}
+                          %)
+                        </span>
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col items-end text-right">
+                      <span className="text-xs label">Take Profit:</span>
+                      <span>
+                        {Number(bot.orderTakeProfit).toFixed(2)}
+                        <span className="text-xs pl-1">
+                          (
+                          {getPercentage(
+                            bot.orderEntryPrice,
+                            bot.orderTakeProfit,
+                            bot.leverage,
+                            bot.orderType
+                          )}
+                          %)
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="text-xs text-gray-400">{bot.strategyInfo}</div>
 
-            {bot.inPos && (
-              <div
-                className={`mt-2 pt-2 border-t text-gray-100 ${bot.orderType === "LONG"
-                  ? "border-up"
-                  : bot.orderType === "SHORT"
-                    ? "border-down"
-                    : "border-gray-700"
-                  }`}
-              >
-                <div className="grid grid-cols-3 gap-x-6 gap-y-2 text-sm">
-                  <div className="flex flex-col">
-                    <span className="text-xs label">PNL:</span>
-                    <span
-                      className={
-                        bot.pnl > 0
-                          ? "text-up"
-                          : bot.pnl < 0
-                            ? "text-down"
-                            : ""
-                      }
-                    >
-                      {Number(bot.pnl).toFixed(2)}
-                    </span>
-                  </div>
+          ))}
+        </div>
 
-                  <div className="flex flex-col">
-                    <span className="text-xs label">Created Time:</span>
-                    <span>{formatDateTime(bot.orderCreatedTime)}</span>
-                  </div>
 
-                  <div className="flex flex-col items-end text-right">
-                    <span className="text-xs label">ROE:</span>
-                    <span
-                      className={
-                        bot.roe > 0
-                          ? "text-up"
-                          : bot.roe < 0
-                            ? "text-down"
-                            : ""
-                      }
-                    >
-                      %{Number(bot.roe).toFixed(2)}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col">
-                    <span className="text-xs label">Entry Price:</span>
-                    <span>{bot.orderEntryPrice}</span>
-                  </div>
-
-                  <div className="flex flex-col">
-                    <span className="text-xs label">Stop Loss:</span>
-                    <span>
-                      {Number(bot.orderStopLoss).toFixed(2)}
-                      <span className="text-xs pl-1">
-                        (
-                        {getPercentage(
-                          bot.orderEntryPrice,
-                          bot.orderStopLoss,
-                          bot.leverage,
-                          bot.orderType
-                        )}
-                        %)
-                      </span>
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col items-end text-right">
-                    <span className="text-xs label">Take Profit:</span>
-                    <span>
-                      {Number(bot.orderTakeProfit).toFixed(2)}
-                      <span className="text-xs pl-1">
-                        (
-                        {getPercentage(
-                          bot.orderEntryPrice,
-                          bot.orderTakeProfit,
-                          bot.leverage,
-                          bot.orderType
-                        )}
-                        %)
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        ))
       )}
+
 
     </div>
   );

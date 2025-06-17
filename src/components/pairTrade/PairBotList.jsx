@@ -38,7 +38,7 @@ export default function PairBotList() {
 
 
             {/* 🔍 Filter dropdowns */}
-            <div className="grid grid-cols-5 sm:grid-cols-5 gap-4 mb-6">
+            {/* <div className="grid grid-cols-5 sm:grid-cols-5 gap-4 my-1">
                 <div className="flex flex-col space-y-1">
                     <label className="text-xs text-gray-500 font-medium">Active</label>
 
@@ -124,7 +124,7 @@ export default function PairBotList() {
                         <option value="true">Open</option>
                     </select>
                 </div>
-            </div>
+            </div> */}
 
 
 
@@ -132,106 +132,108 @@ export default function PairBotList() {
             {bots.length === 0 ? (
                 <div className="text-center text-gray-400 py-8">No bots found.</div>
             ) : (
-                bots.map((bot) => (
-                    <div
-                        key={bot.id}
-                        className={`bg-gray-900 rounded-lg shadow-md p-4 flex flex-col justify-between ${bot.isNotActive ? "text-gray-500" : "text-gray-200"
-                            }`}
-                    >
-                        <div className="flex justify-between items-center">
-                            <div className="flex items-center gap-2">
-                                <a href={`/pair_bots/${bot.id}`} className="text-sm hover:underline">
-                                    {bot.name}
-                                </a>
-                                <div className="text-sm">
-                                    <span className="text-gray-400">{bot.leverage}x </span>
-                                    <span className="ml-1 text-up font-semibold">{bot.totalWins}</span>/
-                                    <span className="text-down font-semibold">{bot.totalLosses}</span>
-                                    <span className="ml-1 text-gray-300"> {Number(bot.zScore).toFixed(2)}</span>
+                <div className="flex flex-col gap-4 mb-4 b border-b-2 border-gray-500 pb-4">
+                    {bots.map((bot) => (
+                        <div
+                            key={bot.id}
+                            className={`bg-gray-900 rounded-lg shadow-md p-4 flex flex-col justify-between ${bot.isNotActive ? "text-gray-500" : "text-gray-200"
+                                }`}
+                        >
+                            <div className="flex justify-between items-center">
+                                <div className="flex items-center gap-2">
+                                    <a href={`/pair_bots/${bot.id}`} className="text-sm hover:underline">
+                                        {bot.name}
+                                    </a>
+                                    <div className="text-sm">
+                                        <span className="text-gray-400">{bot.leverage}x </span>
+                                        <span className="ml-1 text-up font-semibold">{bot.totalWins}</span>/
+                                        <span className="text-down font-semibold">{bot.totalLosses}</span>
+                                        <span className="ml-1 text-gray-300"> {Number(bot.zScore).toFixed(2)}</span>
 
+                                    </div>
                                 </div>
+
+                                <div className="ml-auto text-right">
+                                    <div className="text-sm font-semibold">
+                                        <span className="text-xs text-gray-400 mr-1">
+                                            ({Number(bot.currentCapital + bot.orderCapital1 + bot.orderCapital2).toFixed(2)})
+                                        </span>
+                                        {Number(bot.currentCapital).toFixed(2)}
+                                    </div>
+                                    <p className="text-xs text-gray-400">
+                                        {bot.inPos ? formatDateTime(bot.orderScannedTime2) : formatDateTime(bot.lastScanned)}
+                                    </p>
+                                </div>
+
                             </div>
 
-                            <div className="ml-auto text-right">
-                                <div className="text-sm font-semibold">
-                                    <span className="text-xs text-gray-400 mr-1">
-                                        ({Number(bot.currentCapital1 + bot.orderCapital1 + bot.currentCapital2 + bot.orderCapital2).toFixed(2)})
-                                    </span>
-                                    {Number(bot.currentCapital1 + bot.currentCapital2).toFixed(2)}
-                                </div>
-                                <p className="text-xs text-gray-400">
-                                    {bot.inPos ? formatDateTime(bot.orderScannedTime2) : formatDateTime(bot.lastScanned)}
-                                </p>
-                            </div>
+                            {bot.inPos && (
+                                <div
+                                    className={`mt-2 pt-2 border-t text-gray-100 ${bot.orderType1 === "LONG"
+                                        ? "border-up"
+                                        : bot.orderType1 === "SHORT"
+                                            ? "border-down"
+                                            : "border-gray-700"
+                                        }`}
+                                >
+                                    <div className="grid grid-cols-3 gap-x-6 gap-y-2 text-sm">
+                                        <div className="flex flex-col">
+                                            <span className="text-xs label">PNL:</span>
+                                            <span
+                                                className={
+                                                    bot.pnl1 + bot.pnl2 > 0
+                                                        ? "text-up"
+                                                        : bot.pnl1 + bot.pnl2 < 0
+                                                            ? "text-down"
+                                                            : ""
+                                                }
+                                            >
+                                                {Number(bot.pnl1 + bot.pnl2).toFixed(2)}
+                                            </span>
+                                        </div>
 
+                                        <div className="flex flex-col">
+                                            <span className="text-xs label">Created Time:</span>
+                                            <span>{formatDateTime(bot.orderCreatedTime1)}</span>
+                                        </div>
+
+                                        <div className="flex flex-col items-end text-right">
+                                            <span className="text-xs label">ROE:</span>
+                                            <span
+                                                className={
+                                                    bot.roe1 + bot.roe2 > 0
+                                                        ? "text-up"
+                                                        : bot.roe1 + bot.roe2 < 0
+                                                            ? "text-down"
+                                                            : ""
+                                                }
+                                            >
+                                                %{Number(bot.roe1 + bot.roe2).toFixed(2)}
+                                            </span>
+                                        </div>
+
+                                        <div className="flex flex-col">
+                                            <span className="text-xs label">Entry Price 1:</span>
+                                            <span>{bot.orderEntryPrice1}</span>
+                                        </div>
+
+                                        <div className="flex flex-col">
+                                            <span className="text-xs label">Entry Price 2:</span>
+                                            <span>{bot.orderEntryPrice2}</span>
+                                        </div>
+
+                                        <div className="flex flex-col items-end text-right">
+                                            <span className="text-xs label">ZScore:</span>
+                                            <span>
+                                                {Number(bot.zScore).toFixed(2)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
-
-                        {bot.inPos && (
-                            <div
-                                className={`mt-2 pt-2 border-t text-gray-100 ${bot.orderType1 === "LONG"
-                                    ? "border-up"
-                                    : bot.orderType1 === "SHORT"
-                                        ? "border-down"
-                                        : "border-gray-700"
-                                    }`}
-                            >
-                                <div className="grid grid-cols-3 gap-x-6 gap-y-2 text-sm">
-                                    <div className="flex flex-col">
-                                        <span className="text-xs label">PNL:</span>
-                                        <span
-                                            className={
-                                                bot.pnl1 + bot.pnl2 > 0
-                                                    ? "text-up"
-                                                    : bot.pnl1 + bot.pnl2 < 0
-                                                        ? "text-down"
-                                                        : ""
-                                            }
-                                        >
-                                            {Number(bot.pnl1 + bot.pnl2).toFixed(2)}
-                                        </span>
-                                    </div>
-
-                                    <div className="flex flex-col">
-                                        <span className="text-xs label">Created Time:</span>
-                                        <span>{formatDateTime(bot.orderCreatedTime1)}</span>
-                                    </div>
-
-                                    <div className="flex flex-col items-end text-right">
-                                        <span className="text-xs label">ROE:</span>
-                                        <span
-                                            className={
-                                                bot.roe1 + bot.roe2 > 0
-                                                    ? "text-up"
-                                                    : bot.roe1 + bot.roe2 < 0
-                                                        ? "text-down"
-                                                        : ""
-                                            }
-                                        >
-                                            %{Number(bot.roe1 + bot.roe2).toFixed(2)}
-                                        </span>
-                                    </div>
-
-                                    <div className="flex flex-col">
-                                        <span className="text-xs label">Entry Price 1:</span>
-                                        <span>{bot.orderEntryPrice1}</span>
-                                    </div>
-
-                                    <div className="flex flex-col">
-                                        <span className="text-xs label">Entry Price 2:</span>
-                                        <span>{bot.orderEntryPrice2}</span>
-                                    </div>
-
-                                    <div className="flex flex-col items-end text-right">
-                                        <span className="text-xs label">ZScore:</span>
-                                        <span>
-                                            {Number(bot.zScore).toFixed(2)}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                ))
+                    ))}
+                </div>
             )}
 
         </div>

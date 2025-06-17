@@ -56,7 +56,7 @@ export default function PairBotInfo() {
             <div className="p-6 max-w-2xl mx-auto text-gray-200">
                 <a className="underline" href="/" >back</a>
                 <div className=" rounded-xl  mt-6 text-center text-xl">
-
+                    n
                     <br />
                     Bot not found
                 </div>
@@ -118,7 +118,7 @@ export default function PairBotInfo() {
 
                         <div className="ml-auto text-right">
                             <div className="text-sm font-semibold">
-                                {Number(bot.currentCapital1 + bot.currentCapital2).toFixed(2)}
+                                {Number(bot.currentCapital).toFixed(2)}
                             </div>
                             <p className="text-xs text-gray-400">{formatDateTime(bot.lastScanned)}</p>
                         </div>

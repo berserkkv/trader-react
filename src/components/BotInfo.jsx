@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { closePosition, getBotById, getOrders, getOrdersByBotId, startBot, stopBot } from "../api/Api";
+import { closePosition, deleteBot, getBotById, getOrders, getOrdersByBotId, startBot, stopBot } from "../api/Api";
 import OrderList from "./OrderList";
 import { formatDateTime, getPercentage } from "../tools/Tool";
 import Chart from "./Chart";
@@ -43,10 +43,15 @@ export default function BotInfo() {
     closePosition(bot.id).then(() => reloadBot());
   }
 
+  const handelDelete = () => {
+    deleteBot(bot.id).then(() => reloadBot());
+  }
+
 
   const reloadBot = () => {
     getBotById(id).then(res => setBot(res.data));
   };
+
 
 
   if (loading) return <div className="text-gray-300">Loading bot info...</div>;
@@ -83,6 +88,8 @@ export default function BotInfo() {
             Stop
           </button>
         )}
+
+        <button onClick={() => handelDelete(bot.id)} >Delete</button>
 
         {bot.inPos && (
           <button
