@@ -11,6 +11,7 @@ export const stopBot = (id) => axios.patch(BOTS_API + "/" + id + "/stop");
 export const startBot = (id) => axios.patch(BOTS_API + "/" + id + "/start");
 export const closePosition = (id) => axios.patch(BOTS_API + "/" + id + "/close_position");
 export const deleteBot = (id) => axios.delete(BOTS_API + "/" + id);
+export const UpdateBot = (updateBotReq) => axios.put(BOTS_API, updateBotReq)
 
 const ORDER_API = "http://" + import.meta.env.VITE_API_URL + ":8080/api/orders";
 export const getOrders = () => axios.get(ORDER_API);
@@ -43,3 +44,6 @@ export const getAllPairOrderStatistics = () => axios.get(PAIR_ORDER_API + "/stat
 
 const PRICE_API = "http://" + import.meta.env.VITE_API_URL + ":8080/api/prices";
 export const getPrice = () => axios.get(PRICE_API);
+
+const SYSTEM_API = "http://" + import.meta.env.VITE_API_URL + ":8080/api/system";
+export const getSystemUsage = () => axios.get(SYSTEM_API);

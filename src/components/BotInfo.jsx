@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { closePosition, deleteBot, getBotById, getOrders, getOrdersByBotId, startBot, stopBot } from "../api/Api";
 import OrderList from "./OrderList";
 import { formatDateTime, getPercentage } from "../tools/Tool";
@@ -10,6 +10,7 @@ export default function BotInfo() {
   const [bot, setBot] = useState(null);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getBotById(id)
@@ -44,7 +45,11 @@ export default function BotInfo() {
   }
 
   const handelDelete = () => {
-    deleteBot(bot.id).then(() => reloadBot());
+    const confirmed = confirm("Do you want to delete bot?");
+    if (confirmed) {
+      deleteBot(bot.id).then(() => reloadBot());
+      navigate("/");
+    }
   }
 
 
@@ -71,25 +76,33 @@ export default function BotInfo() {
   return (
     <div>
       <a className="underline text-gray-50" href="/" >back</a>
-      <div className="py-4 max-w-2xl mx-auto text-gray-200 flex gap-2">
-
+      <div className="py-2 max-w-2xl mx-auto text-gray-200 flex gap-2">
         {bot.isNotActive ? (
           <button
             onClick={() => handleStart(bot.id)}
-            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+            className="bg-green-900 hover:bg-green-800 text-white px-2 py-1 rounded"
           >
             Start
           </button>
         ) : (
           <button
             onClick={() => handleStop(bot.id)}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+            className="bg-yellow-900 hover:bg-yellow-800 text-white px-2 py-1 rounded"
           >
             Stop
           </button>
         )}
 
-        <button onClick={() => handelDelete(bot.id)} >Delete</button>
+        <button onClick={() => handelDelete(bot.id)}
+          className="bg-red-900 hover:bg-red-800 text-white px-2 py-1 rounded"
+        >
+          Delete
+        </button>
+        <div className="border-r-2 border-neutral-800"></div>
+
+        <div className="underline py-2 text-gray-300 hover:text-blue-900">
+          <a href={`/bots/${bot.id}/edit`}>Edit</a>
+        </div>
 
         {bot.inPos && (
           <button
@@ -135,6 +148,13 @@ export default function BotInfo() {
               <span className="text-xs label">TakeProfit:</span>
               <span>
                 %{Number(bot.takeProfit).toFixed(2)}
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs label">Trailing Stop:</span>
+              <span>
+                {bot.isTrailingStopActive && "On"}
+                {!bot.isTrailingStopActive && "Off"}
               </span>
             </div>
 
@@ -249,9 +269,12 @@ export default function BotInfo() {
 
 
       </div >
-      <div className="py-4 max-w-2xl mx-auto text-gray-200">
-        <Chart botId={id} />
-      </div>
+      {orders.length > 0 ? (
+        <div className="py-4 max-w-2xl mx-auto text-gray-200">
+          <Chart botId={id} />
+        </div>
+      ) : ("")}
+
 
       <div className="py-4 max-w-2xl mx-auto text-gray-200">
         <OrderList orders={orders} />

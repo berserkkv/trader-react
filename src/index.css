@@ -11,19 +11,19 @@ body {
 }
 
 .text-up {
-  @apply text-blue-500
+  @apply text-blue-800
 }
 
 .text-down {
-  @apply text-yellow-500
+  @apply text-yellow-800
 }
 
 .border-up {
-  @apply border-blue-500
+  @apply border-blue-800
 }
 
 .border-down {
-  @apply border-yellow-500
+  @apply border-yellow-800
 }
 
 .text-xxs {
