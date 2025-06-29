@@ -55,7 +55,7 @@ const AllChart = () => {
     useEffect(() => {
         if (!chartRef.current) return;
 
-        getAllPairOrderStatistics()
+        getAllOrderStatistics()
             .then((res) => {
                 const data = res.data;
 

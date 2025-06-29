@@ -17,7 +17,7 @@ function SystemUsage() {
 
     fetchData()
 
-    const interval = setInterval(fetchData, 5000) // Fetch every 5 seconds
+    const interval = setInterval(fetchData, 60000) // Fetch every 5 seconds
 
     return () => clearInterval(interval) // Cleanup on unmount
   }, [])

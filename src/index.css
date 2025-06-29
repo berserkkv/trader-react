@@ -11,22 +11,26 @@ body {
 }
 
 .text-up {
-  @apply text-blue-800
+  @apply text-blue-700
 }
 
 .text-down {
-  @apply text-yellow-800
+  @apply text-yellow-700
 }
 
 .border-up {
-  @apply border-blue-800
+  @apply border-blue-700
 }
 
 .border-down {
-  @apply border-yellow-800
+  @apply border-yellow-700
 }
 
 .text-xxs {
   font-size: 0.63rem;
 
+}
+
+.btn {
+  @apply text-neutral-300 px-1 py-1 rounded
 }

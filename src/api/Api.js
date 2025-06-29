@@ -19,7 +19,7 @@ export const createOrder = (order) => axios.post(ORDER_API, order);
 export const updateOrder = (order) => axios.put(ORDER_API, order);
 export const getOrdersByBotId = (botId) => axios.get(ORDER_API + "/by-bot", { params: { botId } });
 export const getOrderStatistics = (botId) => axios.get(ORDER_API + "/statistics", { params: { botId } });
-export const getAllOrderStatistics = () => axios.get(ORDER_API + "/statistics");
+export const getAllOrderStatistics = () => axios.get(ORDER_API + "/all-statistics");
 
 
 const PAIR_BOTS_API = "http://" + import.meta.env.VITE_API_URL + ":8080/api/pair_bots";

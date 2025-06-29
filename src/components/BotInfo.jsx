@@ -76,31 +76,31 @@ export default function BotInfo() {
   return (
     <div>
       <a className="underline text-gray-50" href="/" >back</a>
-      <div className="py-2 max-w-2xl mx-auto text-gray-200 flex gap-2">
+      <div className="py-2 max-w-2xl mx-auto text-gray-200 flex gap-1">
         {bot.isNotActive ? (
           <button
             onClick={() => handleStart(bot.id)}
-            className="bg-green-900 hover:bg-green-800 text-white px-2 py-1 rounded"
+            className="bg-green-900 hover:bg-green-800 btn"
           >
             Start
           </button>
         ) : (
           <button
             onClick={() => handleStop(bot.id)}
-            className="bg-yellow-900 hover:bg-yellow-800 text-white px-2 py-1 rounded"
+            className="bg-yellow-900 hover:bg-yellow-800 btn"
           >
             Stop
           </button>
         )}
 
         <button onClick={() => handelDelete(bot.id)}
-          className="bg-red-900 hover:bg-red-800 text-white px-2 py-1 rounded"
+          className="bg-red-900 hover:bg-red-800 btn"
         >
           Delete
         </button>
-        <div className="border-r-2 border-neutral-800"></div>
+        <div className="border-r-2 border-neutral-700"></div>
 
-        <div className="underline py-2 text-gray-300 hover:text-blue-900">
+        <div className="underline btn hover:text-blue-900">
           <a href={`/bots/${bot.id}/edit`}>Edit</a>
         </div>
 
